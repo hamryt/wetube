@@ -27,13 +27,31 @@ const routes = {
     logout: LOGOUT,
     search: SEARCH,
     users: USERS,
-    usersDetail: USERS_DETAIL,
+    usersDetail: id => {
+        if (id) {
+            return `/users/${id}`;
+        } else {
+            return USERS_DETAIL;
+        }
+    },
     editProfile: EDIT_PROFILE,
     changePassword: CHANGE_PASSWORD,
     videos: VIDEOS,
     upload: UPLOAD,
-    videosDetail: VIDEOS_DETAIL,
-    editVideo: EDIT_VIDEO,
+    videosDetail: id => {
+        if (id) {
+            return `/videos/${id}`;
+        } else {
+            return VIDEOS_DETAIL;
+        }
+    },
+    editVideo: id => {
+        if(id) {
+            return `/videos/${id}/edit`;
+        } else {
+            return EDIT_VIDEO;
+        }
+    },
     deleteVideo: DELETE_VIDEO
 };
 

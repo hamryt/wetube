@@ -14,10 +14,15 @@ const app = express();
 
 app.use(helmet());//security
 app.set('view engine', "pug");
+app.use("/uploads", express.static("uploads"));
 app.use(cookieParser());//session
 app.use(bodyParser.json());//받아오는 정보를 접근할 수 있게 도와줌
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(morgan("dev"));//logging 기능 
+app.use(function(req, res, next) {
+    res.setHeader("Content-Security-Policy", "script-src 'self' https://archive.org");
+    return next();
+    });
 
 app.use(localsMiddleware);
 

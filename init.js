@@ -1,6 +1,11 @@
 import app from "./app";
+import "./db";
+import dotenv from "dotenv";
+dotenv.config();//  가리고 싶은 정보를 가리는 것
+import "./models/Video";
+import "./models/Comment"
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 const handleListening = () => console.log(`@@Listening on: http://localhost:${PORT}`);
 
