@@ -3,7 +3,7 @@ import Video from "../models/Video";
 
 export const home = async (req, res) => {
     try{
-        const videos = await Video.find({});
+        const videos = await Video.find({}).sort({_id: -1});
         res.render("home", { pageTitle: "Home", videos });
     }catch(error){
         console.log(error);
@@ -17,7 +17,14 @@ export const search = async (req, res) => {
     const {
         query: { term: searchingBy }
     } = req;
-    const videos = await Video.find({});
+    let videos = [];
+    try{
+        videos = await Video.find({
+            title: {$regex: searchingBy, $options: "i"}
+        }); 
+    } catch(error){
+        console.log(error);
+    }
 
     res.render("search", { pageTitle: "Search", searchingBy, videos });
 };
@@ -45,7 +52,7 @@ export const videosDetail = async (req, res) => {
 
     try{
         const video = await Video.findById(id);
-        res.render("videoDetail", { pageTitle: "Video Detail", video });
+        res.render("videoDetail", { pageTitle: video.title, video });
     } catch (error){
         console.log(error);
         res.redirect(routes.home);
@@ -76,7 +83,16 @@ export const postEditVideo = async (req, res) => {
         res.redirect(routes.home);
     }
 };
-export const deleteVideo = (req, res) => res.send("delete-videos", { pageTitle: "Delete Video"});
+
+export const deleteVideo = async(req, res) => {
+    const {
+        params: {id}
+    } = req;
+    try{
+        await Video.findOneAndRemove({_id: id});
+    } catch(error){ }
+    res.redirect(routes.home);
+}
 
 // function alal(){
 //     return true;
